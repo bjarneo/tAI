@@ -1,0 +1,10 @@
+README.md
+setup.py
+lfg/__init__.py
+lfg/cli.py
+lfg_llama.egg-info/PKG-INFO
+lfg_llama.egg-info/SOURCES.txt
+lfg_llama.egg-info/dependency_links.txt
+lfg_llama.egg-info/entry_points.txt
+lfg_llama.egg-info/requires.txt
+lfg_llama.egg-info/top_level.txt

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lfg-llama"
+version = "1.0.2"
+dependencies = [
+  "ollama==0.1.9",
+]
+requires-python = ">=3.8"
+authors = [
+  {name = "Bjarne Oeverli", email = "bjarneocodes@gmail.com"}
+]
+maintainers = [
+  {name = "Bjarne Oeverli", email = "bjarneocodes@gmail.com"}
+]
+description = "LFG, It Really Whips the Llama's Ass 🦙🦙🦙🦙"
+readme = "README.md"
+license = {file = "LICENSE.txt"}
+keywords = ["llama", "llama3", "cli", "sysadmin", "devops", "hacker", "llm", "tool", "helper"]
+
+[project.urls]
+Homepage = "https://github.com/bjarneo/lfg-llama"
+Documentation = "https://github.com/bjarneo/lfg-llama"
+Repository = "https://github.com/bjarneo/lfg-llama"
+"Bug Tracker" = "https://github.com/bjarneo/lfg-llama"
+Changelog = "https://github.com/bjarneo/lfg-llama"
+
+[project.scripts]
+lfg = "lfg:main"
