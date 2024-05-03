@@ -2,7 +2,6 @@
 
 import os
 import sys
-import json
 from groq import Groq
 
 
