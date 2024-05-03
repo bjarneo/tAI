@@ -47,7 +47,7 @@ def send_chat_query(query: str, client: Groq) -> None:
                 print(chunk.choices[0].delta.content, end="", flush=True)
     except groq.APIConnectionError as e:
         print("The server could not be reached")
-        print(e.__cause__)  # an underlying Exception, likely raised within httpx.
+        print(e.__cause__)
     except groq.RateLimitError as e:
         print("A 429 status code was received; we should back off a bit. Rate limited.")
     except groq.APIStatusError as e:
