@@ -61,7 +61,6 @@ def main():
     """Initializes the Groq client, and processes the query."""
     args = sys.argv[1:]
     if not args:
-        parser.print_help()
         return
 
     try:
