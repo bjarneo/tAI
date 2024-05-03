@@ -5,7 +5,7 @@ import sys
 from groq import Groq
 
 
-def get_groq_client():
+def get_groq_client() -> Groq:
     """Retrieves the GROQ API key and creates a Groq client instance.
 
     Raises:
@@ -18,14 +18,14 @@ def get_groq_client():
     return Groq(api_key=api_key)
 
 
-def generate_system_prompt():
+def generate_system_prompt() -> str:
     """Returns the system prompt for the LLM interaction."""
     return """
 From now on you should act as a system administrator / hacker that is really good at the terminal in linux and mac. All answers should be commands, and nothing else than commands and max 3 commands based on what the user asks for. All should be shown as a command using a bash markdown code block. Commands prefixed with. First the header before code block should be prefixed with # and added before the code block. Then the code block. Then add a short explanation after the code block.
 """
 
 
-def send_chat_query(query, client):
+def send_chat_query(query: str, client: Groq) -> None:
     """Sends a query to the Groq API and handles the response.
 
     Args:
