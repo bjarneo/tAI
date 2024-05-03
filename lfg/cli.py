@@ -2,7 +2,20 @@
 
 import os
 import sys
+import argparse
+from enum import Enum
 from groq import Groq
+
+
+class Models(Enum):
+    """
+    Enumerates supported language models providing model ID references for API calls.
+    """
+
+    LLAMA38B = "llama3-8b-8192"
+    LLAMA370B = "llama3-70b-8192"
+    MIXTRAL8X7B = "mixtral-8x7b-32768"
+    GEMMA7B = "gemma-7b-it"
 
 
 def get_groq_client() -> Groq:
@@ -25,7 +38,7 @@ From now on you should act as a system administrator / hacker that is really goo
 """
 
 
-def send_chat_query(query: str, client: Groq) -> None:
+def send_chat_query(query: str, model: Models, client: Groq) -> None:
     """Sends a query to the Groq API and handles the response.
 
     Args:
@@ -38,7 +51,7 @@ def send_chat_query(query: str, client: Groq) -> None:
                 {"role": "system", "content": generate_system_prompt()},
                 {"role": "user", "content": query},
             ],
-            model="llama3-8b-8192",
+            model=Models[model].value,
             stream=True,
         )
 
@@ -58,15 +71,16 @@ def send_chat_query(query: str, client: Groq) -> None:
 
 def main():
     """Initializes the Groq client, and processes the query."""
-    args = sys.argv[1:]
-    if not args:
+
+    argv = sys.argv[1:]
+    if not argv:
         return
 
     try:
         client = get_groq_client()
-        query = " ".join(args)
+        query = " ".join(argv)
 
-        send_chat_query(query, client)
+        send_chat_query(query, "LLAMA38B", client)
 
         return
     except ValueError as e:
