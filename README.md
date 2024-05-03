@@ -55,3 +55,4 @@ pipenv install
 ### TODO
 
 - Add a flag to choose between all the models available by GROQ
+- Fix the setup and pyproject file, including github workflow for releasing the package
