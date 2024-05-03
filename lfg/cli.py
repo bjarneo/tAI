@@ -34,12 +34,6 @@ def send_chat_query(query, client):
         client (Groq): The Groq client instance.
     """
     try:
-        client = get_groq_client()
-    except ValueError as e:
-        print(f"Error: {e}")
-        sys.exit(1)
-
-    try:
         stream = client.chat.completions.create(
             messages=[
                 {"role": "system", "content": generate_system_prompt()},
@@ -79,8 +73,6 @@ def main():
         return
     except ValueError as e:
         print(f"Error: {e}")
-
-        return
 
 
 if __name__ == "__main__":
