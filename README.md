@@ -6,6 +6,10 @@
 
 LFG is a command-line tool that intelligently helps you find the right terminal commands for your tasks. It taps into the vast knowledge of the LLAMA3 language model (via Ollama) to understand your natural language descriptions and provide you with the most relevant commands and explanations.
 
+## Why?
+
+Testing the llama3 model. Initially it was made using ollama locally, but changed to use groq due to not needing to have the llama3 model downloaded.
+
 ## Installation
 
 ```bash
@@ -47,3 +51,7 @@ pip install --user pipenv
 pipenv --python 3.7
 pipenv install
 ```
+
+### TODO
+
+- Add a flag to choose between all the models available by GROQ
