@@ -28,6 +28,8 @@ pipx install lfg-llama
 
 This executable is using Groq, that means you need and [API token](https://console.groq.com/keys).
 
+Groq is free beta, for now.
+
 Add the token to your .bashrc/.zshrc and reload your terminal.
 
 ```
