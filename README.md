@@ -8,18 +8,7 @@ LFG is a command-line tool that intelligently helps you find the right terminal 
 
 ## Installation
 
-Currently, it uses ollama to run everything locally.
-
 ```bash
-# install ollama
-https://ollama.com/download/
-
-# install the llama3 LLM
-ollama pull llama3
-
-# start ollama
-ollama server
-
 # install pipx
 brew install pipx
 
@@ -32,6 +21,16 @@ pipx install lfg-llama
 ```
 
 ## Usage
+
+This executable is using Groq, that means you need and [API token](https://console.groq.com/keys).
+
+Add the token to your .bashrc/.zshrc and reload your terminal.
+
+```
+export GROQ_API_KEY=1337
+```
+
+Now you can use the executable
 
 ```bash
 lfg kill port 3000

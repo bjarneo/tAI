@@ -12,13 +12,13 @@ def get_install_requires():
 
 setup(
     name="lfg-llama",
-    version="1.0.3",
+    version="1.0.6",
     description="LFG, It Really Whips the Llama's Ass 🦙🦙🦙🦙",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     author="Bjarne Oeverli",
     author_email="bjarneocodes@gmail.com",
     packages=find_packages(),
-    install_requires=["ollama"],
+    install_requires=["groq"],
     entry_points={"console_scripts": ["lfg=lfg.cli:main"]},
 )
