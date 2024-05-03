@@ -39,18 +39,28 @@ def send_chat_query(query, client):
         print(f"Error: {e}")
         sys.exit(1)
 
-    stream = client.chat.completions.create(
-        messages=[
-            {"role": "system", "content": generate_system_prompt()},
-            {"role": "user", "content": query},
-        ],
-        model="llama3-8b-8192",
-        stream=True,
-    )
+    try:
+        stream = client.chat.completions.create(
+            messages=[
+                {"role": "system", "content": generate_system_prompt()},
+                {"role": "user", "content": query},
+            ],
+            model="llama3-8b-8192",
+            stream=True,
+        )
 
-    for chunk in stream:
-        if chunk.choices[0].delta.content:
-            print(chunk.choices[0].delta.content, end="", flush=True)
+        for chunk in stream:
+            if chunk.choices[0].delta.content:
+                print(chunk.choices[0].delta.content, end="", flush=True)
+    except groq.APIConnectionError as e:
+        print("The server could not be reached")
+        print(e.__cause__)  # an underlying Exception, likely raised within httpx.
+    except groq.RateLimitError as e:
+        print("A 429 status code was received; we should back off a bit. Rate limited.")
+    except groq.APIStatusError as e:
+        print("Another non-200-range status code was received")
+        print(e.status_code)
+        print(e.response)
 
 
 def main():
