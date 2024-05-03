@@ -2,7 +2,7 @@
 
 > LFG, It Really Whips the Llama's Ass 🦙🦙🦙🦙
 
-![Logo](./logo.png)
+![Demo](example.gif)
 
 LFG is a command-line tool that intelligently helps you find the right terminal commands for your tasks. It taps into the vast knowledge of the LLAMA3 language model (via Ollama) to understand your natural language descriptions and provide you with the most relevant commands and explanations.
 
@@ -47,7 +47,3 @@ pip install --user pipenv
 pipenv --python 3.7
 pipenv install
 ```
-
-### TODO
-
-- Use the model directly without ollama
