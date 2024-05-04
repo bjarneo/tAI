@@ -38,11 +38,12 @@ From now on you should act as a system administrator / hacker that is really goo
 """
 
 
-def send_chat_query(query: str, model: Models, client: Groq) -> None:
+def send_chat_query(query: str, model: str, client: Groq) -> None:
     """Sends a query to the Groq API and handles the response.
 
     Args:
         query (str): The user's query.
+        model (str): The LLM of choice
         client (Groq): The Groq client instance.
     """
     try:
@@ -72,15 +73,19 @@ def send_chat_query(query: str, model: Models, client: Groq) -> None:
 def main():
     """Initializes the Groq client, and processes the query."""
 
-    argv = sys.argv[1:]
-    if not argv:
-        return
+    parser = argparse.ArgumentParser()
+    parser.add_argument("query", type=str, help="The query sent to the LLM")
+    parser.add_argument(
+        "-m",
+        choices=["llama38b", "llama370b", "mixtral8x7b", "gemma7b"],
+        default="llama370b",
+        help="Select the language model.",
+    )
+    args = parser.parse_args()
 
     try:
         client = get_groq_client()
-        query = " ".join(argv)
-
-        send_chat_query(query, "LLAMA38B", client)
+        send_chat_query(args.query, args.m.upper(), client)
 
         return
     except ValueError as e:
