@@ -50,8 +50,9 @@ lsof -i :3000 | xargs kill
 
 ```
 
-Change the LLM 
-```bash 
+Change the LLM
+
+```bash
 $ lfg "list ec2 pipe json jq get name" -m llama370b
 
 # List EC2 instances with name
@@ -68,6 +69,8 @@ This command uses the AWS CLI to describe EC2 instances, and then pipes the outp
 pip install --user pipenv
 pipenv --python 3.11
 pipenv install
+
+pipenv run lfg "kill port 3000"
 ```
 
 ### TODO

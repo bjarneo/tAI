@@ -3,6 +3,9 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[scripts]
+lfg = "python3 lfg/cli.py"
+
 [packages]
 groq = "==0.5.0"
 
