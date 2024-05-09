@@ -3,8 +3,10 @@
 import os
 import sys
 import argparse
+from typing import Iterator
 from enum import Enum
 from groq import Groq
+from groq.types.chat import ChatCompletion
 
 
 class Models(Enum):
@@ -40,7 +42,18 @@ You are a system administrator and elite hacker that knows all about the termina
 """
 
 
-def send_chat_query(query: str, model: str, client: Groq) -> None:
+def handle_stream(stream: ChatCompletion) -> None:
+    """Processes the output stream from the LLM, printing each response chunk.
+
+    Args:
+        stream (ChatCompletion): An iterator of chunks representing LLM responses.
+    """
+    for chunk in stream:
+        if chunk.choices[0].delta.content:
+            print(chunk.choices[0].delta.content, end="", flush=True)
+
+
+def send_chat_query(query: str, model: str, client: Groq) -> ChatCompletion:
     """Sends a query to the Groq API and handles the response.
 
     Args:
@@ -58,9 +71,7 @@ def send_chat_query(query: str, model: str, client: Groq) -> None:
             stream=True,
         )
 
-        for chunk in stream:
-            if chunk.choices[0].delta.content:
-                print(chunk.choices[0].delta.content, end="", flush=True)
+        return stream
     except groq.APIConnectionError as e:
         print("The server could not be reached")
         print(e.__cause__)
@@ -87,9 +98,9 @@ def main():
 
     try:
         client = get_groq_client()
-        send_chat_query(args.query, args.m.upper(), client)
+        stream = send_chat_query(args.query, args.m.upper(), client)
 
-        return
+        handle_stream(stream)
     except ValueError as e:
         print(f"Error: {e}")
 
