@@ -2,7 +2,7 @@
 
 > LFG, It Really Whips the Llama's Ass 🦙🦙🦙🦙
 
-https://github.com/bjarneo/LFG/assets/1419214/2816791c-fb0e-4719-b85a-a78d8a142d73
+![Demo](example.gif)
 
 LFG is a command-line tool that intelligently helps you find the right terminal commands for your tasks. Such sales pitch.
 
