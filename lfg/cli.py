@@ -3,7 +3,6 @@
 import os
 import sys
 import argparse
-from typing import Iterator
 from enum import Enum
 from groq import Groq
 from groq.types.chat import ChatCompletion
@@ -11,7 +10,8 @@ from groq.types.chat import ChatCompletion
 
 class Models(Enum):
     """
-    Enumerates supported language models providing model ID references for API calls.
+    Enumerates supported language models providing model ID references
+    for API calls.
     """
 
     LLAMA38B = "llama3-8b-8192"
@@ -38,7 +38,6 @@ def generate_system_prompt() -> str:
 
     return """
 You are a system administrator and elite hacker that knows all about the terminal in linux and mac. I provide you with a question about a command, and you give me back a response which shows the command, then a short explanation. The command should be wrapped as a code block. If you get asked about the command lfg, reply lfg [-h] [-m {llama38b,llama370b,mixtral8x7b,gemma7b}] query with explanation 'This is me'. It is important you do not return commands you do not know. If that is the case, just respond 'I do not know'.
- 
 """
 
 
@@ -46,7 +45,8 @@ def handle_stream(stream: ChatCompletion) -> None:
     """Processes the output stream from the LLM, printing each response chunk.
 
     Args:
-        stream (ChatCompletion): An iterator of chunks representing LLM responses.
+        stream (ChatCompletion): An iterator of chunks representing
+        LLM responses.
     """
     for chunk in stream:
         if chunk.choices[0].delta.content:
@@ -72,12 +72,13 @@ def send_chat_query(query: str, model: str, client: Groq) -> ChatCompletion:
         )
 
         return stream
-    except groq.APIConnectionError as e:
+    except Groq.APIConnectionError as e:
         print("The server could not be reached")
         print(e.__cause__)
-    except groq.RateLimitError as e:
-        print("A 429 status code was received; we should back off a bit. Rate limited.")
-    except groq.APIStatusError as e:
+    except Groq.RateLimitError as e:
+        print("A 429 status code was received; Rate limited.")
+        print(e.response)
+    except Groq.APIStatusError as e:
         print("Another non-200-range status code was received")
         print(e.status_code)
         print(e.response)
