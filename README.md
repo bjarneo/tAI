@@ -8,7 +8,11 @@ LFG is a command-line tool that intelligently helps you find the right terminal 
 
 ## Why?
 
-Testing the llama3 model. Initially it was made using ollama locally, but changed to use groq due to not needing to have the llama3 model downloaded.
+- I do not like the Github Copilot command-line
+- Quicker than using Gemini/ChatGPT/Google directly via the browser interface
+- Easier to find what needed without opening man pages
+
+However, never trust the output entirely.
 
 ## Installation
 
