@@ -4,7 +4,7 @@
 
 ![Demo](example.gif)
 
-LFG is a command-line tool that intelligently helps you find the right terminal commands for your tasks. Such sales pitch.
+LFG is a command-line tool that intelligently helps you find the right terminal commands for your tasks. Such sales pitch. This interface is using GPT-4o as an engine.
 
 ## Why?
 
@@ -12,6 +12,7 @@ LFG is a command-line tool that intelligently helps you find the right terminal 
 - I do not like the Github Copilot command-line
 - Quicker than using Gemini/ChatGPT/Google directly via the browser interface
 - Easier to find what needed without opening man pages
+- NEW: Changing to GPT-4o model which is free
 
 However, never trust the output entirely.
 
@@ -31,18 +32,18 @@ pipx install lfg-llama
 
 ## Usage
 
-This executable is using Groq, that means you need and [API token](https://console.groq.com/keys).
+This executable is using OpenAI, that means you need and [API token](https://platform.openai.com/api-keys).
 
-Groq is free beta, for now.
+[GPT-4o](https://platform.openai.com/docs/models/gpt-4o) is free to use.
 
 Add the token to your .bashrc/.zshrc and reload your terminal.
 
 ```
-export GROQ_API_KEY=1337
+OPENAI_API_KEY={replace_me}
 ```
 
 ```
-$ lfg [-h] [-m {llama38b,llama370b,mixtral8x7b,gemma7b}] query
+$ lfg query
 ```
 
 Now you can use the executable
