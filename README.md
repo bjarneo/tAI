@@ -39,7 +39,7 @@ This executable is using OpenAI, that means you need and [API token](https://pla
 Add the token to your .bashrc/.zshrc and reload your terminal.
 
 ```
-OPENAI_API_KEY={replace_me}
+export OPENAI_API_KEY={replace_me}
 ```
 
 ```
