@@ -49,24 +49,27 @@ $ lfg query
 Now you can use the executable
 
 ```bash
-lfg "kill port 3000"
+fuser -k 3000/tcp
 
-# Kill process listening on port 3000
-lsof -i :3000 | xargs kill
+Explanation:
+The `fuser` command identifies processes using files or sockets. The `-k` option is used to kill th
+ose processes. Here, `3000/tcp` specifies the TCP port number 3000. This command effectively kills
+any process currently using port 3000.
 
 ```
 
 Change the LLM
 
 ```bash
-$ lfg "list ec2 pipe json jq get name" -m llama370b
+$ lfg list ec2 pipe json jq get name
 
-# List EC2 instances with name
+aws ec2 describe-instances --query "Reservations[].Instances[].{Name:Tags[?Key=='Name']|[0].Value}"
+ --output json | jq -r '.[].Name'
 
-aws ec2 describe-instances --query 'Reservations[].Instances[]|{Name:Tags[?Key==`Name`]|[0].Value,I
-nstanceId}' --output text | jq '.[] | {"Name", .Name, "InstanceId", .InstanceId}'
-
-This command uses the AWS CLI to describe EC2 instances, and then pipes the output to `jq` to format the output in a JSON-like format, showing the instance name and ID.
+Explanation:
+This command uses the AWS CLI to list EC2 instances and their corresponding 'Name' tag values in JS
+ON format. The `--query` option filters the output to only include the 'Name' tag for each instance
+, and `jq` is used to parse and extract the 'Name' values.%
 ```
 
 ### Development
@@ -76,7 +79,7 @@ pip install --user pipenv
 pipenv --python 3.11
 pipenv install
 
-pipenv run lfg "kill port 3000"
+pipenv run lfg kill port 3000
 ```
 
 ### TODO

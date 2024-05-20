@@ -2,7 +2,6 @@
 
 import os
 import sys
-import argparse
 import openai
 from openai import OpenAI
 from openai.types.chat import ChatCompletion
@@ -75,14 +74,16 @@ def send_chat_query(query: str, client: OpenAI) -> ChatCompletion:
 def main():
     """Initializes the OpenAI client, and processes the query."""
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("query", type=str, help="The query sent to the LLM")
+    if len(sys.argv) < 2:
+        print("Usage: lfg <query>")
 
-    args = parser.parse_args()
+        sys.exit(1)
+
+    query = " ".join(sys.argv[1:])
 
     try:
         client = get_openai_client()
-        stream = send_chat_query(args.query, client)
+        stream = send_chat_query(query, client)
 
         handle_stream(stream)
     except ValueError as e:

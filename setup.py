@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="lfg-llama",
-    version="2.0.2",
+    version="2.1.0",
     description="LFG, It Really Whips the Llama's Ass 🦙🦙🦙🦙",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
