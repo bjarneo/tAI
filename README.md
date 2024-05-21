@@ -49,6 +49,8 @@ $ lfg query
 Now you can use the executable
 
 ```bash
+$ lfg kill port 3000
+
 fuser -k 3000/tcp
 
 Explanation:
