@@ -42,14 +42,17 @@ Add the token to your .bashrc/.zshrc and reload your terminal.
 export OPENAI_API_KEY={replace_me}
 ```
 
-```
-$ lfg query
+You can use either of these commands
+
+```bash
+$ lfg <query>
+$ ask <query>
 ```
 
 Now you can use the executable
 
 ```bash
-$ lfg kill port 3000
+$ ask kill port 3000
 
 fuser -k 3000/tcp
 
@@ -63,7 +66,7 @@ any process currently using port 3000.
 Change the LLM
 
 ```bash
-$ lfg list ec2 pipe json jq get name
+$ ask list ec2 pipe json jq get name
 
 aws ec2 describe-instances --query "Reservations[].Instances[].{Name:Tags[?Key=='Name']|[0].Value}"
  --output json | jq -r '.[].Name'
