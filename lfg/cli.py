@@ -75,7 +75,7 @@ def main():
     """Initializes the OpenAI client, and processes the query."""
 
     if len(sys.argv) < 2:
-        print("Usage: lfg <query>")
+        print("Usage: ask <query>")
 
         sys.exit(1)
 
