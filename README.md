@@ -7,6 +7,7 @@
 <div align="center">
   LFG is a command-line tool that intelligently helps you find the right terminal commands for your tasks. Such sales pitch. This interface is using GPT-4o as an engine.
 </div>
+<br />
 
 ![Demo](example.png)
 
