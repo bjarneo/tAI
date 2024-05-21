@@ -1,10 +1,16 @@
 # LFG
 
-> LFG, It Really Whips the Llama's Ass 🦙🦙🦙🦙
+<div align="center">
+  <img src="logo.png" alt="logo" />
+</div>
+
+<h1 align="center">LFG, It Really Whips the Llama's Ass 🦙🦙🦙🦙</h1>
+
+<div align="center">
+  LFG is a command-line tool that intelligently helps you find the right terminal commands for your tasks. Such sales pitch. This interface is using GPT-4o as an engine.
+</div>
 
 ![Demo](example.png)
-
-LFG is a command-line tool that intelligently helps you find the right terminal commands for your tasks. Such sales pitch. This interface is using GPT-4o as an engine.
 
 ## Why?
 
