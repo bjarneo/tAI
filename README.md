@@ -2,7 +2,7 @@
 
 > LFG, It Really Whips the Llama's Ass 🦙🦙🦙🦙
 
-![Demo](example.gif)
+![Demo](example.png)
 
 LFG is a command-line tool that intelligently helps you find the right terminal commands for your tasks. Such sales pitch. This interface is using GPT-4o as an engine.
 
