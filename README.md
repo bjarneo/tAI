@@ -1,7 +1,3 @@
-<div align="center">
-  <img src="logo.png" alt="logo" />
-</div>
-
 <h1 align="center">LFG, It Really Whips the Llama's Ass 🦙🦙🦙🦙</h1>
 
 <div align="center">
