@@ -52,7 +52,6 @@ You can use either of these commands
 
 ```bash
 $ tai <query>
-$ ask <query>
 ```
 
 Now you can use the executable
