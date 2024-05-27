@@ -1,7 +1,7 @@
-<h1 align="center">TAI [Terminal AI], a terminal AI assistant</h1>
+<h1 align="center">tAI [terminal AI], a terminal AI assistant</h1>
 
 <div align="center">
-TAI is a CLI that helps you with Linux and macOS terminal commands. Just ask it a question, and it will use AI to suggest a command and explain what it does. If you like the suggestion, the script can automatically run the command for you in your terminal.
+tAI is a CLI that helps you with Linux and macOS terminal commands. Just ask it a question, and it will use AI to suggest a command and explain what it does. If you like the suggestion, the script can automatically run the command for you in your terminal.
 </div>
 <br />
 
