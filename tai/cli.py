@@ -123,7 +123,7 @@ def main():
     signal.signal(signal.SIGINT, handle_sigint)
 
     if len(sys.argv) < 2:
-        print("Usage: ask <query>")
+        print("Usage: tai <query>")
 
         sys.exit(1)
 
