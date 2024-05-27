@@ -7,13 +7,13 @@
 
 ![Demo](example.png)
 
-## Why?
+## What?
 
-- Firstly, this was created to test Ollama -> Groq
-- I do not like the Github Copilot command-line
+- I do not like the syntax of the Github Copilot command-line
 - Quicker than using Gemini/ChatGPT/Google directly via the browser interface
 - Easier to find what needed without opening man pages
 - NEW: Changing to GPT-4o model which is free
+- NEW: Execute the command directly from this CLI
 
 However, never trust the output entirely.
 
@@ -62,20 +62,22 @@ The `fuser` command identifies processes using files or sockets. The `-k` option
 ose processes. Here, `3000/tcp` specifies the TCP port number 3000. This command effectively kills
 any process currently using port 3000.
 
+> Execute the command? (N/y):
 ```
 
 Change the LLM
 
 ```bash
-$ ask list ec2 pipe json jq get name
+$ ask get pods from all namespaces
 
-aws ec2 describe-instances --query "Reservations[].Instances[].{Name:Tags[?Key=='Name']|[0].Value}"
- --output json | jq -r '.[].Name'
+kubectl get pods --all-namespaces
+
 
 Explanation:
-This command uses the AWS CLI to list EC2 instances and their corresponding 'Name' tag values in JS
-ON format. The `--query` option filters the output to only include the 'Name' tag for each instance
-, and `jq` is used to parse and extract the 'Name' values.%
+The `kubectl get pods --all-namespaces` command lists all the pods across all namespaces in a Kuber
+netes cluster. The `--all-namespaces` flag is used to fetch the pods from every namespace instead of the default namespace.
+
+> Execute the command? (N/y):
 ```
 
 ### Development

@@ -2,9 +2,18 @@
 
 import os
 import sys
+import re
+import signal
+from types import FrameType
 import openai
 from openai import OpenAI
 from openai.types.chat import ChatCompletion
+
+
+def handle_sigint(signum: int, frame: FrameType) -> None:
+    """Signal handler for Ctrl+C (SIGINT)."""
+    print("\nCtrl+C detected. Exiting gracefully...")
+    sys.exit(0)
 
 
 def get_openai_client() -> OpenAI:
@@ -28,16 +37,22 @@ You are a system administrator and elite hacker that knows all about the termina
 """
 
 
-def handle_stream(stream: ChatCompletion) -> None:
+def handle_stream(stream: ChatCompletion) -> str:
     """Processes the output stream from the LLM, printing each response chunk.
 
     Args:
         stream (ChatCompletion): An iterator of chunks representing
         LLM responses.
     """
+    response = []
+
     for chunk in stream:
         if chunk.choices[0].delta.content:
+            response.append(chunk.choices[0].delta.content)
+
             print(chunk.choices[0].delta.content, end="", flush=True)
+
+    return "".join(response)
 
 
 def send_chat_query(query: str, client: OpenAI) -> ChatCompletion:
@@ -71,8 +86,41 @@ def send_chat_query(query: str, client: OpenAI) -> ChatCompletion:
         print(e.response)
 
 
+def extract_command(text: str) -> str:
+    """Extracts the command from the response.
+
+    Args:
+        text (str): The response from the LLM.
+
+    Returns:
+        str: The command extracted from the response.
+    """
+    pattern = r"```\n(.*?)\n```"
+    match = re.search(pattern, text, re.DOTALL)
+
+    if match:
+        command = match.group(1)
+
+        return command
+
+
+def execute_command(command: str) -> None:
+    """Executes the command in the terminal.
+
+    Args:
+        command (str): The command to execute.
+    """
+    query = input("\n\n> Execute the command? (N/y): ")
+    if query.lower() == "y" or query.lower() == "yes":
+        os.system(command)
+    else:
+        print("\nExiting...")
+
+
 def main():
     """Initializes the OpenAI client, and processes the query."""
+
+    signal.signal(signal.SIGINT, handle_sigint)
 
     if len(sys.argv) < 2:
         print("Usage: ask <query>")
@@ -85,7 +133,13 @@ def main():
         client = get_openai_client()
         stream = send_chat_query(query, client)
 
-        handle_stream(stream)
+        response = handle_stream(stream)
+
+        command = extract_command(response)
+
+        if command:
+            execute_command(command)
+
     except ValueError as e:
         print(f"Error: {e}")
 
