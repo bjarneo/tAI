@@ -10,7 +10,7 @@
 ## Why & What?
 
 - Github Copilot CLI syntax feels clunky to me
-- Faster than using Gemini, ChatGPT, or Google in a browser
+- Faster than using Gemini, ChatGPT or similar in a browser
 - Simpler to find answers without checking man pages
 - NEW: Switching to the free GPT-4o model
 - NEW: Now you can run commands right from this command-line interface
