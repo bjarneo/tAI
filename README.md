@@ -1,19 +1,19 @@
-<h1 align="center">LFG, It Really Whips the Llama's Ass 🦙🦙🦙🦙</h1>
+<h1 align="center">LFG, a terminal assistant</h1>
 
 <div align="center">
-  LFG is a command-line tool that intelligently helps you find the right terminal commands for your tasks. Such sales pitch. This interface is using GPT-4o as an engine.
+  LFG is a Python script that helps you with Linux and macOS terminal commands. Just ask it a question, and it will use AI to suggest a command and explain what it does. If you like the suggestion, the script can automatically run the command for you in your terminal.
 </div>
 <br />
 
 ![Demo](example.png)
 
-## What?
+## Why & What?
 
-- I do not like the syntax of the Github Copilot command-line
-- Quicker than using Gemini/ChatGPT/Google directly via the browser interface
-- Easier to find what needed without opening man pages
-- NEW: Changing to GPT-4o model which is free
-- NEW: Execute the command directly from this CLI
+- Github Copilot CLI syntax feels clunky to me
+- Faster than using Gemini, ChatGPT, or Google in a browser
+- Simpler to find answers without checking man pages
+- NEW: Switching to the free GPT-4o model
+- NEW: Now you can run commands right from this command-line interface
 
 However, never trust the output entirely.
 
