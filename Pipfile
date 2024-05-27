@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [scripts]
-lfg = "python3 lfg/cli.py"
+tai = "python3 tai/cli.py"
 
 [packages]
 openai = "==1.29.0"

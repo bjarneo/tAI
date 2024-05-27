@@ -1,11 +1,15 @@
-<h1 align="center">LFG, a terminal assistant</h1>
+<h1 align="center">TAI [Terminal AI], a terminal AI assistant</h1>
 
 <div align="center">
-  LFG is a Python script that helps you with Linux and macOS terminal commands. Just ask it a question, and it will use AI to suggest a command and explain what it does. If you like the suggestion, the script can automatically run the command for you in your terminal.
+TAI is a CLI that helps you with Linux and macOS terminal commands. Just ask it a question, and it will use AI to suggest a command and explain what it does. If you like the suggestion, the script can automatically run the command for you in your terminal.
 </div>
 <br />
 
 ![Demo](example.png)
+
+## BREAKING
+
+Changing the name from `lfg` to `tai`. The package name is changed from `lfg-llama` to `terminal-ai-assistant`.
 
 ## Why & What?
 
@@ -14,6 +18,7 @@
 - Simpler to find answers without checking man pages
 - NEW: Switching to the free GPT-4o model
 - NEW: Now you can run commands right from this command-line interface
+- NEW: New package name `terminal-ai-assistant`
 
 However, never trust the output entirely.
 
@@ -27,8 +32,8 @@ brew install pipx
 pipx ensurepath
 
 # restart your terminal
-# install LFG
-pipx install lfg-llama
+# install TAI
+pipx install terminal-ai-assistant
 ```
 
 ## Usage
@@ -46,14 +51,14 @@ export OPENAI_API_KEY={replace_me}
 You can use either of these commands
 
 ```bash
-$ lfg <query>
+$ tai <query>
 $ ask <query>
 ```
 
 Now you can use the executable
 
 ```bash
-$ ask kill port 3000
+$ tai kill port 3000
 
 fuser -k 3000/tcp
 
@@ -68,7 +73,7 @@ any process currently using port 3000.
 Change the LLM
 
 ```bash
-$ ask get pods from all namespaces
+$ tai get pods from all namespaces
 
 kubectl get pods --all-namespaces
 
@@ -87,7 +92,7 @@ pip install --user pipenv
 pipenv --python 3.11
 pipenv install
 
-pipenv run lfg kill port 3000
+pipenv run tai kill port 3000
 ```
 
 ### TODO
