@@ -106,15 +106,34 @@ def extract_command(text: str) -> str:
         return command
 
 
+def edit_command(command: str) -> str:
+    """Allows the user to edit the command before execution.
+
+    Args:
+        command (str): The original command.
+
+    Returns:
+        str: The edited command.
+    """
+    print(f"\n Edit and execute the current command: {command}")
+
+    edited_command = input("> ")
+
+    return edited_command.strip() if edited_command.strip() else command
+
+
 def execute_command(command: str) -> None:
     """Executes the command in the terminal.
 
     Args:
         command (str): The command to execute.
     """
-    query = input("\n\n> Execute the command? (N/y): ")
+    query = input("\n\n> Execute the command? (N/e/y): ")
     if query.lower() == "y" or query.lower() == "yes":
         os.system(command)
+    elif query.lower() == "e" or query.lower() == "edit":
+        edited_command = edit_command(command)
+        os.system(edited_command)
     else:
         print("\nExiting...")
 
