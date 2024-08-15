@@ -115,7 +115,7 @@ def edit_command(command: str) -> str:
     Returns:
         str: The edited command.
     """
-    print(f"\n Edit and execute the current command: {command}")
+    print(f"\nEdit and execute the current command: {command}")
 
     edited_command = input("> ")
 
