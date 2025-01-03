@@ -81,11 +81,11 @@ def send_chat_query(query: str, client: OpenAI) -> ChatCompletion:
         print(e.__cause__)
     except openai.RateLimitError as e:
         print("A 429 status code was received; we should back off a bit.")
-        print(e.response)
+        print(e)
     except openai.APIStatusError as e:
         print("Another non-200-range status code was received")
         print(e.status_code)
-        print(e.response)
+        print(e)
 
 
 def extract_command(text: str) -> str:
