@@ -8,6 +8,9 @@ tai = "python3 tai/cli.py"
 
 [packages]
 openai = "==1.29.0"
+setuptools = "*"
+twine = "*"
+wheel = "*"
 
 [dev-packages]
 

@@ -1,8 +1,13 @@
-# python3 -m build
+#!/bin/bash
 
-rm -rf build dist tai_llama.egg-info cli.spec
+# Clean old builds
+rm -rf build dist *.egg-info
 
-python3 setup.py sdist bdist_wheel
+# Ensure we're using pipenv environment
+pipenv install setuptools twine wheel
 
-pip install twine 
-twine upload --repository pypi dist/*  # Or 'twine upload --repository testpypi ...'
+# Build package
+pipenv run python setup.py sdist bdist_wheel
+
+# Upload to PyPI
+pipenv run twine upload --repository pypi dist/*
