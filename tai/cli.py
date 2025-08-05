@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import os
 import sys
 import re
@@ -12,37 +10,84 @@ from rich.syntax import Syntax
 from rich.markdown import Markdown
 import openai
 from openai import OpenAI
-from openai.types.chat import ChatCompletion
+import google.generativeai as genai
+import anthropic
+from groq import Groq
+from tai.config import load_config, create_config
+
+
+class Provider:
+    """A wrapper for different AI providers."""
+
+    def __init__(self, config):
+        self.config = config
+        self.client = self._get_client()
+
+    def _get_client(self):
+        provider = self.config.get("provider")
+        api_key = self.config.get("api_key")
+
+        if provider == "openai":
+            return OpenAI(api_key=api_key)
+        elif provider == "gemini":
+            genai.configure(api_key=api_key)
+            return genai.GenerativeModel(self.config.get("model"))
+        elif provider == "anthropic":
+            return anthropic.Anthropic(api_key=api_key)
+        elif provider == "groq":
+            return Groq(api_key=api_key)
+        else:
+            raise ValueError(f"Unknown provider: {provider}")
+
+    def send_chat_query(self, query, system_prompt):
+        provider = self.config.get("provider")
+        model = self.config.get("model")
+
+        try:
+            if provider in ["openai", "groq"]:
+                return self.client.chat.completions.create(
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": query},
+                    ],
+                    model=model,
+                    stream=True,
+                )
+            elif provider == "gemini":
+                return self.client.generate_content(
+                    f"{system_prompt}\n\n{query}", stream=True
+                )
+            elif provider == "anthropic":
+                return self.client.messages.create(
+                    model=model,
+                    system=system_prompt,
+                    messages=[{"role": "user", "content": query}],
+                    stream=True,
+                )
+        except Exception as e:
+            Console().print(
+                Panel(
+                    f"[bold red]Error sending chat query: {e}[/bold red]",
+                    title="API Error",
+                    border_style="red",
+                )
+            )
+            sys.exit(1)
 
 
 class CommandLineInterface:
-    """A command-line interface for interacting with the OpenAI API."""
+    """A command-line interface for interacting with AI providers."""
 
-    def __init__(self) -> None:
+    def __init__(self, config) -> None:
         """Initializes the CommandLineInterface."""
         self.console = Console()
-        self.client = self._get_openai_client()
+        self.config = config
+        self.provider = Provider(self.config)
 
     def handle_sigint(self, signum: int, frame: FrameType) -> None:
         """Signal handler for Ctrl+C (SIGINT)."""
         self.console.print("\n[bold red]Ctrl+C detected. Exiting gracefully...[/bold red]")
         sys.exit(0)
-
-    def _get_openai_client(self) -> OpenAI:
-        """
-        Retrieves the OpenAI API key and creates an OpenAI client instance.
-        """
-        api_key = os.environ.get("OPENAI_API_KEY")
-        if not api_key:
-            self.console.print(
-                Panel(
-                    "[bold red]OPENAI_API_KEY environment variable is not set[/bold red]",
-                    title="Error",
-                    border_style="red",
-                )
-            )
-            sys.exit(1)
-        return OpenAI(api_key=api_key)
 
     def _generate_system_prompt(self) -> str:
         """Returns the system prompt for the LLM interaction."""
@@ -60,37 +105,26 @@ class CommandLineInterface:
         Explanation: list files and folders.
         """
 
-    def _handle_stream(self, stream: ChatCompletion) -> str:
+    def _handle_stream(self, stream) -> str:
         """
         Processes the output stream from the LLM, printing each response chunk.
         """
         response = []
-        for chunk in stream:
-            if chunk.choices[0].delta.content:
-                response.append(chunk.choices[0].delta.content)
-        return "".join(response)
+        provider = self.config.get("provider")
 
-    def _send_chat_query(self, query: str) -> ChatCompletion:
-        """
-        Sends a query to the OpenAI API and handles the response.
-        """
-        try:
-            stream = self.client.chat.completions.create(
-                messages=[
-                    {"role": "system", "content": self._generate_system_prompt()},
-                    {"role": "user", "content": query},
-                ],
-                model="gpt-4o",
-                stream=True,
-            )
-            return stream
-        except openai.APIConnectionError as e:
-            self.console.print(f"[bold red]The server could not be reached: {e.__cause__}[/bold red]")
-        except openai.RateLimitError as e:
-            self.console.print(f"[bold red]A 429 status code was received; we should back off a bit: {e}[/bold red]")
-        except openai.APIStatusError as e:
-            self.console.print(f"[bold red]Another non-200-range status code was received: {e.status_code} {e}[/bold red]")
-        sys.exit(1)
+        with self.console.status("[bold green]Waiting for response...[/bold green]"):
+            for chunk in stream:
+                if provider in ["openai", "groq"]:
+                    content = chunk.choices[0].delta.content
+                elif provider == "gemini":
+                    content = chunk.text
+                elif provider == "anthropic":
+                    content = chunk.delta.text
+
+                if content:
+                    response.append(content)
+
+        return "".join(response)
 
     def _extract_command(self, text: str) -> str:
         """
@@ -98,7 +132,7 @@ class CommandLineInterface:
         """
         pattern = r"```bash\n(.*?)\n```"
         match = re.search(pattern, text, re.DOTALL)
-        return match.group(1) if match else ""
+        return match.group(1).strip() if match else ""
 
     def _edit_command(self, command: str) -> str:
         """
@@ -124,26 +158,13 @@ class CommandLineInterface:
         else:
             self.console.print("[bold red]Exiting...[/bold red]")
 
-    def run(self) -> None:
-        """Initializes the OpenAI client and processes the query."""
+    def run(self, query: str) -> None:
+        """Initializes the application and processes the query."""
         signal.signal(signal.SIGINT, self.handle_sigint)
 
-        if len(sys.argv) < 2:
-            self.console.print(
-                Panel(
-                    "[bold yellow]Usage: tai <query>[/bold yellow]",
-                    title="Info",
-                    border_style="yellow",
-                )
-            )
-            sys.exit(1)
-
-        query = " ".join(sys.argv[1:])
-
-        with self.console.status("[bold green]Waiting for response...[/bold green]"):
-            stream = self._send_chat_query(query)
-            response = self._handle_stream(stream)
-
+        system_prompt = self._generate_system_prompt()
+        stream = self.provider.send_chat_query(query, system_prompt)
+        response = self._handle_stream(stream)
         command = self._extract_command(response)
 
         if command:
@@ -155,8 +176,26 @@ class CommandLineInterface:
 
 def main() -> None:
     """Initializes and runs the command-line interface."""
-    cli = CommandLineInterface()
-    cli.run()
+    config = load_config()
+
+    if not config:
+        create_config()
+        sys.exit(0)
+
+    if len(sys.argv) < 2:
+        console = Console()
+        console.print(
+            Panel(
+                "[bold yellow]Usage: tai <query>[/bold yellow]",
+                title="Info",
+                border_style="yellow",
+            )
+        )
+        sys.exit(1)
+
+    cli = CommandLineInterface(config)
+    query = " ".join(sys.argv[1:])
+    cli.run(query)
 
 
 if __name__ == "__main__":

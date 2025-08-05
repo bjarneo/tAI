@@ -69,21 +69,6 @@ any process currently using port 3000.
 > Execute the command? (N/y):
 ```
 
-Change the LLM
-
-```bash
-$ tai get pods from all namespaces
-
-kubectl get pods --all-namespaces
-
-
-Explanation:
-The `kubectl get pods --all-namespaces` command lists all the pods across all namespaces in a Kuber
-netes cluster. The `--all-namespaces` flag is used to fetch the pods from every namespace instead of the default namespace.
-
-> Execute the command? (N/y):
-```
-
 ### Development
 
 ```bash

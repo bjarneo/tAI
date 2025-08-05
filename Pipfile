@@ -3,15 +3,16 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
-[scripts]
-tai = "python3 tai/cli.py"
-
 [packages]
+anthropic = "*"
+google-generativeai = "*"
+groq = "*"
 openai = "*"
 rich = "*"
 setuptools = "*"
 twine = "*"
 wheel = "*"
+terminal-ai-assistant = {file = ".", editable = true}
 
 [dev-packages]
 

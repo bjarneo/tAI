@@ -1,2 +1,5 @@
+anthropic
+google-generativeai
+groq
 openai
 rich
