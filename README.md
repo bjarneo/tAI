@@ -7,66 +7,44 @@ tAI is a CLI that helps you with Linux and macOS terminal commands. Just ask it 
 
 ![Demo](example.png)
 
-## BREAKING
-
-Changing the name from `lfg` to `tai`. The package name is changed from `lfg-llama` to `terminal-ai-assistant`.
-
 ## Why & What?
 
 - Github Copilot CLI syntax feels clunky to me
 - Faster than using Gemini, ChatGPT or similar in a browser
 - Simpler to find answers without checking man pages
-- NEW: Switching to the free GPT-4o model
-- NEW: Now you can run commands right from this command-line interface
-- NEW: New package name `terminal-ai-assistant`
+- **NEW:** Support for multiple AI providers (OpenAI, Google, Anthropic, Groq)
+- **NEW:** Interactive TUI setup using `inquirer` for provider and model selection
+- **NEW:** Enhanced terminal UI with `rich` for better readability and prompts
+- **NEW:** Now you can run commands right from this command-line interface
 
 However, never trust the output entirely.
 
 ## Installation
 
 ```bash
-# install pipx
+# install pipx (if you don't have it)
 brew install pipx
-
-# add pipx binaries to path
 pipx ensurepath
 
-# restart your terminal
 # install TAI
 pipx install terminal-ai-assistant
 ```
 
 ## Usage
 
-This executable is using OpenAI, that means you need and [API token](https://platform.openai.com/api-keys).
+On your first run, `tai` will guide you through a quick, interactive setup process to choose your AI provider, select a model from a curated list, and enter your API key. This information will be securely stored in `~/.config/tai/config.json`.
 
-[GPT-4o](https://platform.openai.com/docs/models/gpt-4o) is free to use.
-
-Add the token to your .bashrc/.zshrc and reload your terminal.
-
-```
-export OPENAI_API_KEY={replace_me}
-```
-
-You can use either of these commands
-
-```bash
-$ tai <query>
-```
-
-Now you can use the executable
+Once configured, you can use `tai` with your queries:
 
 ```bash
 $ tai kill port 3000
 
-fuser -k 3000/tcp
+# Example output (formatted with rich):
+╭────────────────────────────────────────────────── Command ───────────────────────────────────────────────────╮
+│ kill $(lsof -t -i :3000)                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 
-Explanation:
-The `fuser` command identifies processes using files or sockets. The `-k` option is used to kill th
-ose processes. Here, `3000/tcp` specifies the TCP port number 3000. This command effectively kills
-any process currently using port 3000.
-
-> Execute the command? (N/y):
+Execute the command: kill $(lsof -t -i :3000)? [y/n]:
 ```
 
 ### Development
@@ -78,7 +56,3 @@ pipenv install
 
 pipenv run tai kill port 3000
 ```
-
-### TODO
-
-- Fix the setup and pyproject file, including github workflow for releasing the package
