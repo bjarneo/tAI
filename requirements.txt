@@ -1,5 +1,6 @@
 anthropic
 google-generativeai
 groq
+inquirer
 openai
 rich

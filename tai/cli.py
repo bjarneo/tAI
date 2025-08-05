@@ -12,7 +12,6 @@ import openai
 from openai import OpenAI
 import google.generativeai as genai
 import anthropic
-from groq import Groq
 from tai.config import load_config, create_config
 
 
@@ -29,13 +28,11 @@ class Provider:
 
         if provider == "openai":
             return OpenAI(api_key=api_key)
-        elif provider == "gemini":
+        elif provider == "google":
             genai.configure(api_key=api_key)
             return genai.GenerativeModel(self.config.get("model"))
         elif provider == "anthropic":
             return anthropic.Anthropic(api_key=api_key)
-        elif provider == "groq":
-            return Groq(api_key=api_key)
         else:
             raise ValueError(f"Unknown provider: {provider}")
 
@@ -44,7 +41,7 @@ class Provider:
         model = self.config.get("model")
 
         try:
-            if provider in ["openai", "groq"]:
+            if provider in ["openai"]:
                 return self.client.chat.completions.create(
                     messages=[
                         {"role": "system", "content": system_prompt},
@@ -53,7 +50,7 @@ class Provider:
                     model=model,
                     stream=True,
                 )
-            elif provider == "gemini":
+            elif provider == "google":
                 return self.client.generate_content(
                     f"{system_prompt}\n\n{query}", stream=True
                 )
@@ -114,9 +111,9 @@ class CommandLineInterface:
 
         with self.console.status("[bold green]Waiting for response...[/bold green]"):
             for chunk in stream:
-                if provider in ["openai", "groq"]:
+                if provider in ["openai"]:
                     content = chunk.choices[0].delta.content
-                elif provider == "gemini":
+                elif provider == "google":
                     content = chunk.text
                 elif provider == "anthropic":
                     content = chunk.delta.text
