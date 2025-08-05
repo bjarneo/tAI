@@ -10,10 +10,10 @@ groq = "*"
 inquirer = "*"
 openai = "*"
 rich = "*"
+terminal-ai-assistant = {file = ".", editable = true}
 setuptools = "*"
 twine = "*"
 wheel = "*"
-terminal-ai-assistant = {file = ".", editable = true}
 
 [dev-packages]
 
