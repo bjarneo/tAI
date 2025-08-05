@@ -10,6 +10,6 @@ setup(
     author="Bjarne Oeverli",
     author_email="bjarneocodes@gmail.com",
     packages=find_packages(),
-    install_requires=["openai"],
+    install_requires=["openai", "rich"],
     entry_points={"console_scripts": ["tai=tai.cli:main"]},
 )

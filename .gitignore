@@ -3,3 +3,4 @@ build/
 lfg_llama.egg-info/
 pyproject.backup.toml
 terminal_ai_assistant.egg-info/
+.env
