@@ -12,6 +12,7 @@ MODELS = {
     "openai": ["gpt-4.1-mini", "o4-mini", "gpt-4o", "gpt-4-turbo", "gpt-3.5-turbo"],
     "google": ["gemini-2.5-flash", "gemini-2.5-pro"],
     "anthropic": ["claude-sonnet-4-20250514", "claude-3-5-haiku-20241022"],
+    "openrouter": ["openai/gpt-4o-mini", "anthropic/claude-3.5-sonnet", "google/gemini-2.5-flash"],
 }
 
 def load_config():
@@ -56,15 +57,33 @@ def create_config():
     answers = inquirer.prompt(questions)
     provider = answers["provider"]
 
-    questions = [
-        inquirer.List(
-            "model",
-            message="Choose a model",
-            choices=MODELS[provider],
-        ),
-        inquirer.Password("api_key", message=f"Enter your {provider.capitalize()} API key"),
-    ]
-    answers.update(inquirer.prompt(questions))
+    model_choices = MODELS.get(provider, [])
+    if model_choices:
+        model_questions = [
+            inquirer.List(
+                "model_choice",
+                message="Choose a model (or enter a custom model name)",
+                choices=model_choices + ["custom"],
+            ),
+        ]
+        answers.update(inquirer.prompt(model_questions))
+        if answers["model_choice"] == "custom":
+            custom_answer = inquirer.prompt(
+                [inquirer.Text("model", message="Enter custom model name")]
+            )
+            answers["model"] = custom_answer["model"].strip()
+        else:
+            answers["model"] = answers["model_choice"]
+    else:
+        answers.update(
+            inquirer.prompt([inquirer.Text("model", message="Enter model name")])
+        )
+
+    answers.update(
+        inquirer.prompt(
+            [inquirer.Password("api_key", message=f"Enter your {provider.capitalize()} API key")]
+        )
+    )
 
     config = {
         "provider": answers["provider"],
