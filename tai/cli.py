@@ -8,11 +8,14 @@ from rich.panel import Panel
 from rich.prompt import Prompt, Confirm
 from rich.syntax import Syntax
 from rich.markdown import Markdown
-import openai
 from openai import OpenAI
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 import anthropic
-from tai.config import load_config, create_config
+try:
+    from tai.config import load_config, create_config
+except ModuleNotFoundError:
+    from config import load_config, create_config
 
 
 class Provider:
@@ -28,9 +31,10 @@ class Provider:
 
         if provider == "openai":
             return OpenAI(api_key=api_key)
+        elif provider == "openrouter":
+            return OpenAI(api_key=api_key, base_url="https://openrouter.ai/api/v1")
         elif provider == "google":
-            genai.configure(api_key=api_key)
-            return genai.GenerativeModel(self.config.get("model"))
+            return genai.Client(api_key=api_key)
         elif provider == "anthropic":
             return anthropic.Anthropic(api_key=api_key)
         else:
@@ -41,7 +45,7 @@ class Provider:
         model = self.config.get("model")
 
         try:
-            if provider in ["openai"]:
+            if provider in ["openai", "openrouter"]:
                 return self.client.chat.completions.create(
                     messages=[
                         {"role": "system", "content": system_prompt},
@@ -51,8 +55,12 @@ class Provider:
                     stream=True,
                 )
             elif provider == "google":
-                return self.client.generate_content(
-                    f"{system_prompt}\n\n{query}", stream=True
+                return self.client.models.generate_content_stream(
+                    model=model,
+                    contents=[query],
+                    config=types.GenerateContentConfig(
+                        system_instruction=system_prompt.strip()
+                    ),
                 )
             elif provider == "anthropic":
                 return self.client.messages.create(
@@ -111,12 +119,15 @@ class CommandLineInterface:
 
         with self.console.status("[bold green]Waiting for response...[/bold green]"):
             for chunk in stream:
-                if provider in ["openai"]:
+                content = None
+                if provider in ["openai", "openrouter"]:
                     content = chunk.choices[0].delta.content
                 elif provider == "google":
                     content = chunk.text
                 elif provider == "anthropic":
                     content = chunk.delta.text
+                else:
+                    raise ValueError(f"Unknown provider: {provider}")
 
                 if content:
                     response.append(content)
